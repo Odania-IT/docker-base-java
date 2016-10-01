@@ -1,12 +1,13 @@
-FROM odaniait/docker-base:latest
+FROM odaniait/docker-base:alpine
 MAINTAINER Mike Petersen <mike@odania-it.de>
 
-# Install Java.
-RUN echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | debconf-set-selections && \
-  add-apt-repository -y ppa:webupd8team/java && \
-  apt-get update && \
-  apt-get install -y oracle-java8-installer maven && \
-  rm -rf /var/cache/oracle-jdk8-installer
+# Install base packages
+RUN apk update
+RUN apk upgrade
+RUN apk --update add openjdk8
+
+# Clean APK cache
+RUN rm -rf /var/cache/apk/*
 
 # Define commonly used JAVA_HOME variable
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle
+ENV JAVA_HOME /usr/lib/jvm/java-1.8-openjdk/
